@@ -105,11 +105,10 @@ minikube addons enable ingress
 
 https://github.com/kubernetes/minikube/issues/8756
 
-### notas
-
+### notes (old)
+```
 apiVersion: networking.k8s.io/v1beta1
 # UPDATE THE API
-```
 kind: Ingress
 metadata:
   name: ingress-service
@@ -138,4 +137,33 @@ spec:
               serviceName: server-cluster-ip-service
               ### server-cluster-ip-service es el nombre del servicio
               servicePort: 5000
+```
+### notes (new)
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: client-cluster-ip-service
+                port:
+                  number: 3000
+          - path: /api/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: server-cluster-ip-service
+                port:
+                  number: 5000
 ```
