@@ -1,5 +1,5 @@
 ## minikube
-
+```
 minikube start
 
 minikube ip
@@ -7,9 +7,9 @@ minikube ip
 minikube dashboard
 
 minikube delete
-
+```
 ## Commands
-
+```
 kubectl apply -f <config-file / folder>
 
 kubectl get pods
@@ -27,13 +27,13 @@ kubectl get pods -o wide
 kubectl set image <object-type> / <object-name> <container-name> = <new-image-to-use>
 
 kubectl set image deployment/client-deployment client=facundoalarcon/multi-client:v1
-
-## ver containers de minikube - cambio de docker-server
-
+```
+## show minikube containers - docker-server change
+```
 eval $(minikube docker-env)
-
+```
 ## troubleshooting
-
+```
 docker logs <container-id>
 
 docker exect -it <containter-id> sh
@@ -41,58 +41,60 @@ docker exect -it <containter-id> sh
 kubectl logs <pod-id>
 
 kubectl exec -it <pod-id> sh
-
+```
 ## storage classess
+```
 kubectl get storageclass
 
 kubectl describe storageclass
 
 https://kubernetes.io/docs/concepts/storage/storage-classes/
-
+```
 ## get persistent volumes (pv) and persistent volume claim (pvc)
-
+```
 kubectl get pv
 
 kubectl get pvc
-
+```
 ## create secrets
 
 It is recommended to create it manually so as not to have a config file
-
+```
 kubectl create secret <type> <secret_name> --from-literal key=value
-
+```
 type:
 - generic: indicates that we are storing an arbitrary number of key = value sets 
 - docker-registry
 - tls
 
-### ejemplo de uso
-
+### example
+```
 kubectl create secret generic pgpassword --from-literal PGPASSWORD=12345asdf
 
 kubectl get secrets
+```
 
+```
 env:
   - name: POSTGRES_PASSWORD     // value that expects the container to be passed to it (depends on the image, in the case of postgresql it expects that for the key)
     valueFrom:
       secretKeyRef:
         name: pgpassword        // name that was given to the secret when creating it
         key: PGPASSWORD         // key (with that it retrieves the value of the key)
-
+```
 ### note
+
 If some environment variable is in base64 / string string and others in number, an error will appear (then there you have to pass them all to string strings)
-
-
-## eliminar cached images en el nodo
+## delete node cache images
+```
 kubectl delete services <name>
 kubectl delete pods <name>
-
-### previo cambio de docker-server 
-
+```
+### docker-server previously changed
+```
 docker system prune -a
-
-### combinar varios config files en uno solo 
-
+```
+### combine several files in one file
 use three times - to separate the objects
 
 ```
