@@ -109,6 +109,7 @@ https://github.com/kubernetes/minikube/issues/8756
 
 apiVersion: networking.k8s.io/v1beta1
 # UPDATE THE API
+```
 kind: Ingress
 metadata:
   name: ingress-service
@@ -137,3 +138,4 @@ spec:
               serviceName: server-cluster-ip-service
               ### server-cluster-ip-service es el nombre del servicio
               servicePort: 5000
+```
