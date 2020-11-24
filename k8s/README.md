@@ -144,6 +144,8 @@ spec:
               servicePort: 5000
 ```
 ### notes (new)
+https://kubernetes.io/docs/concepts/services-networking/ingress/
+https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
 ```
 apiVersion: networking.k8s.io/v1
 kind: Ingress
