@@ -57,12 +57,12 @@ kubectl get pvc
 
 ## create secrets
 
-Esto conviene crearlo manualmente para no tener un archivo de config
+It is recommended to create it manually so as not to have a config file
 
 kubectl create secret <type> <secret_name> --from-literal key=value
 
 type:
-- generic: indica que estamos guardando un numero arbitrario de conjuntos key=value 
+- generic: indicates that we are storing an arbitrary number of key = value sets 
 - docker-registry
 - tls
 
@@ -73,14 +73,14 @@ kubectl create secret generic pgpassword --from-literal PGPASSWORD=12345asdf
 kubectl get secrets
 
 env:
-  - name: POSTGRES_PASSWORD     // valor que espera que se le pase el container (depende de la imagen, en el caso de postgresql espera eso para la clave)
+  - name: POSTGRES_PASSWORD     // value that expects the container to be passed to it (depends on the image, in the case of postgresql it expects that for the key)
     valueFrom:
       secretKeyRef:
-        name: pgpassword        // nombre que se le dio al secret al crearlo
-        key: PGPASSWORD         // key (con eso recupera el valor de la clave)
+        name: pgpassword        // name that was given to the secret when creating it
+        key: PGPASSWORD         // key (with that it retrieves the value of the key)
 
-### nota
-si alguna variable de entorno esta en base64/cadena de string y otras en nro saldra un error (entonces ahi hay que pasarlas todas a cadenas de string)
+### note
+If some environment variable is in base64 / string string and others in number, an error will appear (then there you have to pass them all to string strings)
 
 
 ## eliminar cached images en el nodo
@@ -92,11 +92,14 @@ kubectl delete pods <name>
 docker system prune -a
 
 ### combinar varios config files en uno solo 
-usar tres veces - para separar los objetos
 
+use three times - to separate the objects
+
+```
 object1
 ---
 object2
+```
 
 ## NGINX ingress-controller
 https://github.com/kubernetes/ingress-nginx
@@ -113,13 +116,13 @@ kind: Ingress
 metadata:
   name: ingress-service
   annotations:
-  ### las annotations son escencialmente opciones de configurarion adicional que van a especificar un tipo de configuracion de nivel superior alrededor del objeto de ingreso (Ingress) que se esta creando
+  ### annotations are essentially additional configuration options that are going to specify a type of top-level configuration around the Ingress object that is being created
     kubernetes.io/ingress.class: nginx
-    ### la linea anterior indica Ingress controller basado en el proyecto nginx 
+    ### the previous line indicates Ingress controller based on the nginx project
     nginx.ingress.kubernetes.io/use-regex: 'true'
     # ADD THIS LINE ABOVE
     nginx.ingress.kubernetes.io/rewrite-target: /$1
-    ### la linea anterior indica como se comporta nuestra copia de nginx (esta es la / de direccion de nginx)
+    ### The previous line indicates how our copy of nginx behaves (this is the / of nginx address)
     # UPDATE THIS LINE ABOVE
 spec:
   rules:
@@ -129,13 +132,13 @@ spec:
           # UPDATE THIS LINE ABOVE
             backend:
               serviceName: client-cluster-ip-service
-              ### client-cluster-ip-service es el nombre del servicio
+              ### client-cluster-ip-service is the service name
               servicePort: 3000
           - path: /api/?(.*)
           # UPDATE THIS LINE ABOVE
             backend:
               serviceName: server-cluster-ip-service
-              ### server-cluster-ip-service es el nombre del servicio
+              ### server-cluster-ip-service is the service name
               servicePort: 5000
 ```
 ### notes (new)
